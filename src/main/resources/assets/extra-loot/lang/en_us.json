@@ -1,0 +1,13 @@
+{
+    "text.autoconfig.extra-loot.title": "Extra Loot",
+    "text.autoconfig.extra-loot.option.maxHealthWeight": "Max Health Weight",
+    "text.autoconfig.extra-loot.option.armorWeight": "Armor Weight",
+    "text.autoconfig.extra-loot.option.armorToughnessWeight": "Armor Toughness Weight",
+    "text.autoconfig.extra-loot.option.attackDamageWeight": "Attack Damage Weight",
+    "text.autoconfig.extra-loot.option.extraLoots": "Extra Loots",
+    "text.autoconfig.extra-loot.option.ExtraLoot": "ExtraLoot",
+    "text.autoconfig.extra-loot.option.ExtraLoot.target_regex": "Target Regex",
+    "text.autoconfig.extra-loot.option.ExtraLoot.extra_table": "Extra Table",
+    "text.autoconfig.extra-loot.option.extraXpMultiplier": "Extra Xp Multiplier",
+    "text.autoconfig.extra-loot.option.extraXpChance": "Extra Xp Chance"
+}
