@@ -5,13 +5,12 @@
 	"name": "Extra Loot",
 	"description": "Extra Loot",
 	"authors": [
-		"Leo!"
+		"Karashok-Leo"
 	],
 	"contact": {
-		"homepage": "...",
-		"sources": "..."
+		"sources": "https://github.com/Karashok-Leo/Extra_Loot"
 	},
-	"license": "CC0-1.0",
+	"license": "GPLv3",
 	"icon": "assets/extra-loot/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -26,9 +25,9 @@
 		"fabricloader": ">=0.14.0",
 		"minecraft": "~1.20.1",
 		"java": ">=17",
+		"cloth-config": ">=11.1.106",
 		"fabric-api": "*"
 	},
 	"suggests": {
-		"another-mod": "*"
 	}
 }
