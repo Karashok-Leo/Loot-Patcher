@@ -1,7 +1,9 @@
-# Introduction
+# 🪄Introduction
 This mod has added a new loot table predicate ([What is that?](https://minecraft.wiki/w/Predicate)) so that you can configure the loot based on entity attributes.
 
 In addition, you can quickly add new pools to existing loot tables by editing configuration file.
+
+# ⚙️Configuration
 ### The initial configuration file looks like:
 
 ```
@@ -18,7 +20,7 @@ In addition, you can quickly add new pools to existing loot tables by editing co
 The first four entries determine the weights of various attributes.
 The remaining three entries are used to configure loot and experience drops.
 
-# Example Usage
+# 📜Example Usage
 It is obvious that there should be no ellipses or comments in the JSON format file, and this case is only for the sake of explanation.
 ### Configuration file:
 ### ```extra-loot.json```
@@ -71,7 +73,7 @@ For instance, when a player kills a zombie, the game will weight and sum the max
 
 Besides, when a player kills a mob, there is a certain chance to drop extra experience. The probability is equal to the "extraXpChance" property in the configuration file, and the value of extra experience is equal to the weighted sum of attributes multiplied by the "extraXpMultiplier" property in the configuration file.
 
-# Warning
+# 🚨Warning
 You should try to avoid infinite loops in the loot table during the configuration process.
 
 ~~Even if you don't, there won't be any serious consequences...~~
@@ -89,3 +91,6 @@ You should try to avoid infinite loops in the loot table during the configuratio
 }
 ```
 In this case, the target loot tables contain the extra table. If you kill a zombie, the zombie's loot table will attempt to drop itself, which causes infinite recursion.
+
+# ✉️Feedback
+If there are any bugs or suggestions, please provide feedback to the issue page.
