@@ -1,0 +1,7 @@
+{
+  "text.autoconfig.loot-patcher.title": "战利品补丁",
+  "text.autoconfig.loot-patcher.option.patches": "补丁",
+  "text.autoconfig.loot-patcher.option.Patch": "补丁",
+  "text.autoconfig.loot-patcher.option.Patch.target_tables": "目标战利品表",
+  "text.autoconfig.loot-patcher.option.Patch.extra_tables": "额外战利品表"
+}

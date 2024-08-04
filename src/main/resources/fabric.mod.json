@@ -1,33 +1,31 @@
 {
 	"schemaVersion": 1,
-	"id": "extra-loot",
+	"id": "loot-patcher",
 	"version": "${version}",
-	"name": "Extra Loot",
-	"description": "Extra Loot",
+	"name": "Loot Patcher",
+	"description": "Loot Patcher",
 	"authors": [
 		"Karashok-Leo"
 	],
 	"contact": {
-		"sources": "https://github.com/Karashok-Leo/Extra_Loot"
+		"sources": "https://github.com/Karashok-Leo/Loot_Patcher"
 	},
-	"license": "GPLv3",
-	"icon": "assets/extra-loot/icon.png",
+	"license": "LGPLv2.1",
+	"icon": "assets/loot-patcher/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.karashokleo.extraloot.ExtraLoot"
+			"karashokleo.loot_patcher.LootPatcher"
 		],
 		"modmenu": [
-			"net.karashokleo.extraloot.ModMenuIntegration"
+			"karashokleo.loot_patcher.ModMenuIntegration"
 		]
 	},
 	"depends": {
 		"fabricloader": ">=0.14.0",
 		"minecraft": "~1.20.1",
 		"java": ">=17",
-		"cloth-config": ">=11.1.106",
+		"cloth-config": "*",
 		"fabric-api": "*"
-	},
-	"suggests": {
 	}
 }

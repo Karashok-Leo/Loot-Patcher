@@ -1,0 +1,7 @@
+{
+    "text.autoconfig.loot-patcher.title": "Loot Patcher",
+    "text.autoconfig.loot-patcher.option.patches": "Patches",
+    "text.autoconfig.loot-patcher.option.Patch": "Patch",
+    "text.autoconfig.loot-patcher.option.Patch.target_tables": "Target Tables",
+    "text.autoconfig.loot-patcher.option.Patch.extra_tables": "Extra Tables"
+}
