@@ -3,7 +3,9 @@ package karashokleo.loot_patcher;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.entry.LootTableEntry;
@@ -20,35 +22,38 @@ import java.util.regex.Pattern;
 
 public class LootPatcher implements ModInitializer
 {
-    public static LootPatcherConfig CONFIG = new LootPatcherConfig();
     public static final String MOD_ID = "loot-patcher";
-    private static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     private static boolean reloading = false;
-    private static final HashSet<LootPatcherConfig.Patch> patchesCache = new HashSet<>();
-    private static final HashSet<LootPatcherConfig.Patch> patchesUsed = new HashSet<>();
+    private static final HashSet<LootPatch> patchesCache = new HashSet<>();
+    private static final HashSet<LootPatch> patchesUsed = new HashSet<>();
 
     @Override
     public void onInitialize()
     {
-        AutoConfig.register(LootPatcherConfig.class, GsonConfigSerializer::new);
-        CONFIG = AutoConfig.getConfigHolder(LootPatcherConfig.class).getConfig();
+        if (isClothLoaded())
+            AutoConfig.register(LootPatcherConfig.class, GsonConfigSerializer::new);
+
+        LootPatcherData.load();
+
+        ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, serverResourceManager) -> LootPatcherData.load());
 
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) ->
         {
             if (!reloading)
             {
                 reloading = true;
-                LOGGER.info("Loot-Patcher patching begins!");
-                patchesCache.clear();
+                LOGGER.info("[Loot-Patcher] Patching begins!");
                 patchesUsed.clear();
-                patchesCache.addAll(LootPatcher.CONFIG.patches);
+                patchesCache.clear();
+                patchesCache.addAll(LootPatcherData.getPatches());
             }
 
-            for (LootPatcherConfig.Patch patch : patchesCache)
+            for (LootPatch patch : patchesCache)
             {
                 boolean doPatch = false;
-                for (String targetRegex : patch.target_tables)
+                for (String targetRegex : patch.target_tables())
                     if (matches(id.toString(), targetRegex))
                     {
                         doPatch = true;
@@ -56,7 +61,7 @@ public class LootPatcher implements ModInitializer
                     }
                 if (doPatch)
                 {
-                    tablePools(tableBuilder, patch.extra_tables);
+                    tablePools(tableBuilder, patch.extra_tables());
                     patchesUsed.add(patch);
                 }
             }
@@ -69,13 +74,18 @@ public class LootPatcher implements ModInitializer
             {
                 LOGGER.warn("Found {} unused patches, possibly due to mistakes in the target loot table regex!", patchesCache.size());
                 LOGGER.info("Unused patches:");
-                for (LootPatcherConfig.Patch patch : patchesCache) logPatch(patch);
+                for (LootPatch patch : patchesCache) logPatch(patch);
             }
             patchesCache.clear();
             patchesUsed.clear();
-            LOGGER.info("Loot-Patcher patching ends!");
+            LOGGER.info("[Loot-Patcher] Patching ends!");
             reloading = false;
         });
+    }
+
+    public static boolean isClothLoaded()
+    {
+        return FabricLoader.getInstance().isModLoaded("cloth-config");
     }
 
     private static boolean matches(String subject, @Nullable String nullableRegex)
@@ -89,7 +99,7 @@ public class LootPatcher implements ModInitializer
         return matcher.find();
     }
 
-    private static void tablePools(LootTable.Builder tableBuilder, List<String> tableIds)
+    private static void tablePools(LootTable.Builder tableBuilder, List<Identifier> tableIds)
     {
         tableBuilder.pools(
                 tableIds.stream()
@@ -97,18 +107,18 @@ public class LootPatcher implements ModInitializer
                                 tableId -> LootPool
                                         .builder()
                                         .rolls(ConstantLootNumberProvider.create(1))
-                                        .with(LootTableEntry.builder(new Identifier(tableId)))
+                                        .with(LootTableEntry.builder(tableId))
                                         .build()
                         )
                         .toList()
         );
     }
 
-    private static void logPatch(LootPatcherConfig.Patch patch)
+    private static void logPatch(LootPatch patch)
     {
         LOGGER.info("\t{");
-        logTables("target_tables", patch.target_tables);
-        logTables("extra_tables", patch.extra_tables);
+        logTables("target_tables", patch.target_tables());
+        logTables("extra_tables", patch.extra_tables().stream().map(Identifier::toString).toList());
         LOGGER.info("\t}");
     }
 
